@@ -24,7 +24,7 @@ The projects involved microcontroller programming, electronic circuit prototypin
 ### Development Board
 
 <p align="center">
-  <img src="images/il-matto-board.jpg" alt="Il Matto Development Board" width="350">
+  <img src="images/il-matto-board.jpeg" alt="Il Matto Development Board" width="350">
 </p>
 
 ### Components
