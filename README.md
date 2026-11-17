@@ -21,9 +21,7 @@ The examples target the **ATmega644P** on an **Il Matto** development board, ass
 
 The laboratory work involved practical circuit prototyping, electronic components, and hardware testing.
 
-![Breadboard Prototype](images/breadboard-prototype.jpeg)
-
-*Breadboard circuit prototype with laboratory power supplies and LED indicators.*
+![Breadboard Prototype](images/il-matto-board.jpg.jpeg)
 
 ## Repository Layout
 
@@ -44,6 +42,7 @@ avr-embedded-systems/
 │   └── debug.h
 ├── images/
 │   └── breadboard-prototype.jpg
+│   └── il-matto-board.jpeg
 ├── Makefile
 ├── .gitignore
 └── README.md
