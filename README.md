@@ -1,27 +1,52 @@
 
 # AVR Embedded Systems — C Lab Projects
 
-A collection of **seven standalone embedded C programs** developed from university microcontroller laboratory exercises, covering digital I/O, PWM tone generation, analogue-to-digital conversion (ADC), and interrupts.
+A collection of **seven standalone embedded C programs** developed during ELEC1201 laboratory exercises at the **University of Southampton**, covering digital I/O, PWM, analogue-to-digital conversion (ADC), and interrupt-driven programming.
 
-The examples target the **ATmega644P** on an **Il Matto** development board, assuming a **12 MHz** processor clock. They are separate experiments, **not** one combined firmware application. The code and accompanying build tools have not yet been collectively verified on physical hardware.
+The projects use the **ATmega644P microcontroller** on the **Il Matto development board**, operating at 12 MHz. Each program is compiled and executed independently.
 
 ## Projects
 
 | Folder | File | Description |
 | --- | --- | --- |
-| `Digital-IO` | `counter.c` | Counts 0–9 on a seven-segment display connected to Port A, with a software delay. |
-| `PWM` | `tone.c` | Generates an approximately 262 Hz tone on OC1A (PD5) using Timer1 Phase and Frequency Correct PWM (Mode 9). |
-| `ADC` | `voltage.c` | Measures ADC channel 0 and prints the raw 10-bit reading and calculated voltage via UART0. |
-| `ADC` | `proximity.c` | Reads ADC channel 1 and controls an LED on PB7 using two thresholds (300 and 700), with UART output. |
-| `Interrupts` | `timer.c` | Updates a seven-segment counter using Timer1 compare-match interrupts at approximately 1 Hz. |
-| `Interrupts` | `adc.c` | Samples the ADC in free-running mode, controls PB7 at threshold 650, and toggles PB3 on each ADC interrupt. |
-| `Interrupts` | `external.c` | Increments/decrements an 8-bit value using INT1/INT0 and outputs it on Port C. |
+| `Digital-IO` | `counter.c` | Seven-segment display counter (0–9) using software delays. |
+| `PWM` | `tone.c` | Generates a 262 Hz tone using Timer1 PWM. |
+| `ADC` | `voltage.c` | Measures analogue voltage and outputs readings through UART. |
+| `ADC` | `proximity.c` | Optical proximity detection using ADC and LED control. |
+| `Interrupts` | `timer.c` | Seven-segment counter using Timer1 interrupts. |
+| `Interrupts` | `adc.c` | Continuous ADC sampling and interrupt-driven LED control. |
+| `Interrupts` | `external.c` | Increment/decrement counter using external interrupts. |
 
-## Hardware Implementation
+## Hardware & Equipment
 
-The laboratory work involved practical circuit prototyping, electronic components, and hardware testing.
+The projects involved microcontroller programming, electronic circuit prototyping, sensor interfacing, and hardware testing.
 
-![Il Matto ATmega644P Development Board](images/il-matto-board.jpeg)
+### Development Board
+
+<p align="center">
+  <img src="images/il-matto-board.jpg" alt="Il Matto Development Board" width="350">
+</p>
+
+### Components
+
+| Component | Image |
+| --- | --- |
+| Seven-segment LED display | <img src="images/7-segment-display.png" width="100"> |
+| Rotary encoder | <img src="images/rotary-encoder.jpg" width="100"> |
+| Piezo speaker | <img src="images/piezo-speaker.jpg" width="100"> |
+| Resistors | <img src="images/resistors.jpg" width="100"> |
+| Capacitors | <img src="images/capacitors.jpg" width="100"> |
+| TCRT1010 reflective optical sensor | <img src="images/TCRT1010-reflective-optical-sensor.jpg" width="100"> |
+| MCP602 dual operational amplifier | <img src="images/MCP60-dual-op-amp-IC.jpg" width="100"> |
+
+### Testing Equipment
+
+| Equipment | Image |
+| --- | --- |
+| Oscilloscope | <img src="images/oscilloscope.png" width="130"> |
+| Logic analyser | <img src="images/logic-analyzer.jpg" width="130"> |
+
+*Component images are illustrative references to laboratory hardware and do not necessarily represent completed implementations.*
 
 ## Repository Layout
 
@@ -41,8 +66,6 @@ avr-embedded-systems/
 ├── common/
 │   └── debug.h
 ├── images/
-│   └── breadboard-prototype.jpg
-│   └── il-matto-board.jpeg
 ├── Makefile
 ├── .gitignore
 └── README.md
@@ -50,50 +73,46 @@ avr-embedded-systems/
 
 ## Requirements
 
-- AVR toolchain: `avr-gcc`, `avr-libc`, `avr-objcopy`, and GNU Make.
-- ATmega644P development hardware and suitable connections for the selected exercise.
-- For UART-based ADC examples: a **3.3 V-compatible** UART-to-USB interface or the board's compatible serial interface and a serial terminal configured to **9600 baud, 8-N-1**.
+- AVR-GCC toolchain (`avr-gcc`, `avr-libc`, `avr-objcopy`)
+- GNU Make
+- ATmega644P microcontroller and Il Matto development board
+- Compatible UART interface for serial debugging
 
 ## Build
 
-Run commands from the repository root:
+Run the following commands from the repository root:
 
-```sh
-make                         # Build all seven separate .elf and .hex programs
-make list                    # Display expected .hex output paths
-make build/ADC/voltage.hex   # Build just one example
+```bash
+make                         # Build all seven programs
+make list                    # List firmware outputs
+make build/ADC/voltage.hex   # Build a specific program
 make clean                   # Remove generated files
 ```
 
-Outputs appear under `build/`, preserving each source folder name. The Makefile **does not flash** the microcontroller; use an appropriate programmer and board-specific upload procedure.
+Compiled firmware is stored in the `build/` directory.
 
-The default target is ATmega644P at 12 MHz. The programs are written for this configuration; changing the CPU frequency requires reviewing timer calculations and other hardware-dependent settings.
+The default target is ATmega644P at 12 MHz. Changing the CPU frequency requires reviewing timer calculations and other hardware-dependent settings.
 
 ## UART Debugging
 
-`common/debug.h` is a **minimal replacement helper written for this repository**, not the original university-provided library. It supplies `init_debug_uart0()` and routes `printf()` to UART0 transmit (TX only). It uses the build clock definition and a 9600-baud UART setting.
+`common/debug.h` provides UART0 serial output at **9600 baud**, allowing the ADC programs to print measurements through `printf()`.
 
-The two ADC examples include `"debug.h"`; the Makefile supplies `-Icommon`. Their `%f` voltage output requires AVR-libc floating-point `printf`, enabled by the relevant Makefile target-specific linker flags.
+The helper is a replacement implementation rather than the original university-provided library.
 
-To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** and share ground. Check the board's electrical levels and any onboard UART routing before connecting external equipment. An ordinary RS-232 voltage-level interface must **not** be connected directly to the MCU pins.
+## Hardware Notes
 
-## Hardware Notes and Limitations
+- Each program contains its own `main()` function and must be compiled separately.
+- ADC measurements assume a 3.3 V external reference.
+- External interrupt inputs use active-low switches.
+- Timer1 examples configure their compare values before starting the timer.
+- Hardware functionality and compilation have not been fully reverified.
 
-- All seven sources contain their own `main()` function and must be built/flashed **individually**.
-- Seven-segment patterns assume the laboratory's particular Port A segment wiring and current-limiting resistors.
-- ADC programs assume a **3.3 V reference supplied to AREF** and use right-adjusted 10-bit results; confirm reference wiring on the actual board.
-- `Interrupts/external.c` assumes **active-low** external switches on INT0/PD2 and INT1/PD3. Mechanical switch bounce is not filtered.
-- Full Port C operation may require disabling JTAG, depending on microcontroller fuse settings.
-- `Interrupts/adc.c` retains unused initialisation functions from the original laboratory submission. The ADC configuration actually used is in `main()`.
-- Timer1-based examples configure their compare/TOP values before starting the timer.
-- ADC proximity sampling using `_delay_ms(200)` is only **approximately** 5 samples/s because ADC conversion and UART output also take time.
-- Physical wiring, compiler compatibility, and measured output frequencies have **not yet been verified** as part of this repository preparation.
-
-## Hardware References
+## Hardware Reference
 
 - **Microcontroller:** ATmega644P
 - **Development Board:** Il Matto
 - **Seven-Segment Display:** Kingbright SC08-11GWA
-- **Display Datasheet:** [SC08-11GWA Datasheet](https://www.kingbrightusa.com/images/catalog/SPEC/sc08-11gwa.pdf)
+- **Datasheet:** [SC08-11GWA](https://www.kingbrightusa.com/images/catalog/SPEC/sc08-11gwa.pdf)
 
-*These projects were developed as part of the **ELEC1201 laboratory exercises at the University of Southampton**, using the ATmega644P microcontroller and Il Matto development board.
+------------------------------------------------------------------------------------------------------------------------------------------------
+Developed as part of the **ELEC1201 laboratory exercises at the University of Southampton**, covering digital I/O, PWM, analogue input, and interrupts.
