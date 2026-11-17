@@ -1,7 +1,7 @@
 
 # AVR Embedded Systems — C Lab Projects
 
-A collection of **seven standalone embedded C programs** developed during ELEC1201 laboratory exercises at the **University of Southampton**, covering digital I/O, PWM, analogue-to-digital conversion (ADC), and interrupt-driven programming.
+A collection of **seven standalone embedded C programs** developed from university microcontroller laboratory exercises, covering digital I/O, PWM tone generation, analogue-to-digital conversion (ADC), and interrupts.
 
 The projects use the **ATmega644P microcontroller** on the **Il Matto development board**, operating at 12 MHz. Each program is compiled and executed independently.
 
