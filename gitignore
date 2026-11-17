@@ -1,0 +1,18 @@
+# Generated AVR build files
+build/
+*.elf
+*.hex
+*.eep
+*.map
+*.lst
+*.lss
+*.o
+*.d
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
