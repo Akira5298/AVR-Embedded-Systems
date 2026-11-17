@@ -21,7 +21,7 @@ The examples target the **ATmega644P** on an **Il Matto** development board, ass
 
 The laboratory work involved practical circuit prototyping, electronic components, and hardware testing.
 
-![Breadboard Prototype](images/breadboard-prototype.jpg)
+![Breadboard Prototype](images/breadboard-prototype.jpeg)
 
 *Breadboard circuit prototype with laboratory power supplies and LED indicators.*
 
