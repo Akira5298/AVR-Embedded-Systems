@@ -1,6 +1,5 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "debug.h"
 
 volatile uint8_t count = 0; // Shared counter variable
 
@@ -25,17 +24,15 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 int main(void) {
-    // Initialize UART for debugging
-    init_debug_uart0();
-
     // Set Port A as output for the 7-segment display
     DDRA = 0xFF;
-
-    // Configure Timer 1
-    TCCR1B |= (1 << WGM12) | (1 << CS12); // CTC mode, prescaler 256
-    OCR1A = 62499;                        // Set compare value for 1s delay
+    
+    // Configure Timer1 in CTC mode
+    TCCR1B = (1 << WGM12);
+    OCR1A = 46874;                        // Set compare value for 1s at 12 MHz
     TIMSK1 |= (1 << OCIE1A);              // Enable Timer Compare Interrupt
-
+    TCCR1B |= (1 << CS12);                // Start Timer1 with prescaler 256
+    
     sei(); // Enable global interrupts
 
     // Main loop
@@ -43,3 +40,4 @@ int main(void) {
         // Spin in the loop, all work done in ISR
     }
 }
+

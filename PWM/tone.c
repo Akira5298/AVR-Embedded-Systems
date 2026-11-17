@@ -35,7 +35,7 @@ void init_tone(void)
     TCCR1A = _BV(COM1A0) | _BV(WGM10); // Toggle OC1A on compare match, WGM10 = 1
 
     // Prescaler = 8
-    TCCR1B = _BV(WGM13) | _BV(CS11); // WGM13 = 1, Prescaler = 8
+    TCCR1B = _BV(WGM13); // Configure Mode 9; keep Timer1 stopped
 }
 
 /* tone ---
@@ -51,5 +51,7 @@ void tone(uint16_t frequency)
 
     // Set TOP value in OCR1A (Mode 9 uses OCR1A as TOP)
     OCR1A = topValue;
+    
+    TCCR1B |= _BV(CS11); // Start Timer1 with prescaler 8
 }
 

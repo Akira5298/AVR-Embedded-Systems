@@ -15,6 +15,10 @@ int main(void) {
     // Set Port C as output for the 8-bit value
     DDRC = 0xFF;
 
+    // Enable internal pull-up resistors for INT0 (PD2) and INT1 (PD3)
+    DDRD &= ~((1 << PD2) | (1 << PD3));
+    PORTD |= (1 << PD2) | (1 << PD3);
+
     // Configure external interrupts
     EIMSK |= (1 << INT0) | (1 << INT1); // Enable INT0 and INT1
     EICRA |= (1 << ISC01) | (1 << ISC11); // Falling edge for INT0 and INT1
