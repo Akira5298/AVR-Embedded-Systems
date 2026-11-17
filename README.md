@@ -85,6 +85,9 @@ To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** an
 - ADC proximity sampling using `_delay_ms(200)` is only **approximately** 5 samples/s because ADC conversion and UART output also take time.
 - Physical wiring, compiler compatibility, and measured output frequencies have **not yet been verified** as part of this repository preparation.
 
-## Origin and attribution
+## Hardware References
 
-These programs were adapted from the author's university embedded-systems lab exercises. Some original laboratory starter material may have been supplied by the course. The replacement UART helper and build files are new repository support code. Before adding an open-source licence, confirm redistribution rights for any course-provided material and retain required attribution.
+- **Microcontroller:** ATmega644P
+- **Development Board:** Il Matto
+- **Seven-Segment Display:** Kingbright SC08-11GWA
+- **Display Datasheet:** [SC08-11GWA Datasheet](https://www.kingbrightusa.com/images/catalog/SPEC/sc08-11gwa.pdf)
