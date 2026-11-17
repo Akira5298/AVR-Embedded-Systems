@@ -1,3 +1,4 @@
+
 # AVR Embedded Systems — C Lab Projects
 
 A collection of **seven standalone embedded C programs** developed from university microcontroller laboratory exercises, covering digital I/O, PWM tone generation, analogue-to-digital conversion (ADC), and interrupts.
@@ -16,7 +17,15 @@ The examples target the **ATmega644P** on an **Il Matto** development board, ass
 | `Interrupts` | `adc.c` | Samples the ADC in free-running mode, controls PB7 at threshold 650, and toggles PB3 on each ADC interrupt. |
 | `Interrupts` | `external.c` | Increments/decrements an 8-bit value using INT1/INT0 and outputs it on Port C. |
 
-## Repository layout
+## Hardware Implementation
+
+The laboratory work involved practical circuit prototyping, electronic components, and hardware testing.
+
+![Breadboard Prototype](images/breadboard-prototype.jpg)
+
+*Breadboard circuit prototype with laboratory power supplies and LED indicators.*
+
+## Repository Layout
 
 ```text
 avr-embedded-systems/
@@ -33,6 +42,8 @@ avr-embedded-systems/
 │   └── external.c
 ├── common/
 │   └── debug.h
+├── images/
+│   └── breadboard-prototype.jpg
 ├── Makefile
 ├── .gitignore
 └── README.md
@@ -49,23 +60,17 @@ avr-embedded-systems/
 Run commands from the repository root:
 
 ```sh
-make                    # Build all seven separate .elf and .hex programs
-make list               # Display expected .hex output paths
-make build/ADC/voltage.hex  # Build just one example
-make clean              # Remove generated files
+make                         # Build all seven separate .elf and .hex programs
+make list                    # Display expected .hex output paths
+make build/ADC/voltage.hex   # Build just one example
+make clean                   # Remove generated files
 ```
 
 Outputs appear under `build/`, preserving each source folder name. The Makefile **does not flash** the microcontroller; use an appropriate programmer and board-specific upload procedure.
 
-Default build settings are `MCU=atmega644p` and `F_CPU=12000000UL`. Override them only if your target actually differs, for example:
+The default target is ATmega644P at 12 MHz. The programs are written for this configuration; changing the CPU frequency requires reviewing timer calculations and other hardware-dependent settings.
 
-```sh
-make F_CPU=12000000UL
-```
-
-Changing `F_CPU` alone will **not** automatically update every original lab calculation: `PWM/tone.c` contains a hardcoded 1.5 MHz timer clock, `Interrupts/timer.c` has a compare value calculated for 12 MHz, and ADC voltage conversion assumes a 3.3 V reference.
-
-## UART debugging
+## UART Debugging
 
 `common/debug.h` is a **minimal replacement helper written for this repository**, not the original university-provided library. It supplies `init_debug_uart0()` and routes `printf()` to UART0 transmit (TX only). It uses the build clock definition and a 9600-baud UART setting.
 
@@ -73,7 +78,7 @@ The two ADC examples include `"debug.h"`; the Makefile supplies `-Icommon`. Thei
 
 To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** and share ground. Check the board's electrical levels and any onboard UART routing before connecting external equipment. An ordinary RS-232 voltage-level interface must **not** be connected directly to the MCU pins.
 
-## Hardware notes and limitations
+## Hardware Notes and Limitations
 
 - All seven sources contain their own `main()` function and must be built/flashed **individually**.
 - Seven-segment patterns assume the laboratory's particular Port A segment wiring and current-limiting resistors.
@@ -81,7 +86,7 @@ To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** an
 - `Interrupts/external.c` assumes **active-low** external switches on INT0/PD2 and INT1/PD3. Mechanical switch bounce is not filtered.
 - Full Port C operation may require disabling JTAG, depending on microcontroller fuse settings.
 - `Interrupts/adc.c` retains unused initialisation functions from the original laboratory submission. The ADC configuration actually used is in `main()`.
-- The original timer and PWM programs should initialise their compare/TOP registers **before enabling the timer clock** to avoid startup transients.
+- Timer1-based examples configure their compare/TOP values before starting the timer.
 - ADC proximity sampling using `_delay_ms(200)` is only **approximately** 5 samples/s because ADC conversion and UART output also take time.
 - Physical wiring, compiler compatibility, and measured output frequencies have **not yet been verified** as part of this repository preparation.
 
@@ -91,3 +96,5 @@ To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** an
 - **Development Board:** Il Matto
 - **Seven-Segment Display:** Kingbright SC08-11GWA
 - **Display Datasheet:** [SC08-11GWA Datasheet](https://www.kingbrightusa.com/images/catalog/SPEC/sc08-11gwa.pdf)
+
+*These projects were developed as part of the **ELEC1201 laboratory exercises at the University of Southampton**, using the ATmega644P microcontroller and Il Matto development board.
