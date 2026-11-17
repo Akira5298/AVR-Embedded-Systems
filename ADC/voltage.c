@@ -49,7 +49,7 @@ int main(void)
         // Convert the raw ADC result to voltage
         voltage = (result / 1024.0) * 3.3; // Using 3.3V as the reference voltage
 
-        // Print ADC result and measured voltage
+        // Print ADC result and measured voltage through UART
         printf("%4u : %6.5fV\n", result, voltage);
 
         // Wait for 1 second
