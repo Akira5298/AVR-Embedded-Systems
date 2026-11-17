@@ -134,6 +134,5 @@ To observe values, connect a compatible serial receiver to **UART0 TX (PD1)** an
 - **Display Datasheet:** [SC08-11GWA Datasheet](https://www.kingbrightusa.com/images/catalog/SPEC/sc08-11gwa.pdf)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
-
 These projects were developed as part of the **ELEC1201 laboratory exercises at the University of Southampton**, using the ATmega644P microcontroller and Il Matto development board.
 
